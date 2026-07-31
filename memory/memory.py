@@ -1,23 +1,35 @@
-import chromadb
+from memory.database import connect
 
 class Memory:
 
-    def __init__(self):
-        self.client = chromadb.PersistentClient(path="./memory_db")
-        self.collection = self.client.get_or_create_collection(
-            name="ananya_memory"
-        )
+    def save_preference(self, key, value):
 
-    def save(self, text):
-        self.collection.add(
-            documents=[text],
-            ids=[str(self.collection.count() + 1)]
-        )
+        conn = connect()
+        cursor = conn.cursor()
 
-    def recall(self):
-        data = self.collection.get()
+        cursor.execute("""
+        INSERT OR REPLACE INTO preferences(key,value)
+        VALUES(?,?)
+        """,(key,value))
 
-        if len(data["documents"]) == 0:
-            return []
+        conn.commit()
+        conn.close()
 
-        return data["documents"]
+    def get_preference(self,key):
+
+        conn=connect()
+        cursor=conn.cursor()
+
+        cursor.execute("""
+        SELECT value FROM preferences
+        WHERE key=?
+        """,(key,))
+
+        row=cursor.fetchone()
+
+        conn.close()
+
+        if row:
+            return row[0]
+
+        return None
