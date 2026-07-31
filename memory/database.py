@@ -14,18 +14,16 @@ def create_tables():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS preferences(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        key TEXT UNIQUE,
+        key TEXT PRIMARY KEY,
         value TEXT
     )
     """)
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS conversations(
+    CREATE TABLE IF NOT EXISTS tasks(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        speaker TEXT,
-        message TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        task TEXT NOT NULL,
+        done INTEGER DEFAULT 0
     )
     """)
 
