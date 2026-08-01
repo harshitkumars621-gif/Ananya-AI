@@ -22,7 +22,11 @@ while True:
     if handled:
         print("\n" + reply + "\n")
         continue
+    answer = chat(user)
 
+    print("\n🌸 Ananya:")
+    print(answer)
+    
     # ==========================
     # Favourite Game Save
     # ==========================
@@ -243,33 +247,11 @@ while True:
         continue
 
 
-    # ==========================
-    # AI Chat
-    # ==========================
+# ==========================
+# AI Chat
+# ==========================
 
-    prompt = f"""
-You are Ananya.
+answer = chat(user)
 
-You are Harshit's personal AI assistant.
-
-Reply naturally in Hindi.
-
-Keep replies short.
-
-User:
-{user}
-
-Assistant:
-"""
-
-    result = subprocess.run(
-        ["ollama", "run", "llama3.2"],
-        input=prompt,
-        capture_output=True,
-        text=True
-    )
-
-    answer = result.stdout.strip()
-
-    print("\n🌸 Ananya:")
-    print(answer)
+print("\n🌸 Ananya:")
+print(answer)

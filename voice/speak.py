@@ -1,10 +1,7 @@
-import pyttsx3
-
-engine = pyttsx3.init()
-
-engine.setProperty("rate", 175)
+import subprocess
 
 def speak(text):
-    print("Ananya:", text)
-    engine.say(text)
-    engine.runAndWait()
+    try:
+        subprocess.run(["say", text])
+    except:
+        pass
