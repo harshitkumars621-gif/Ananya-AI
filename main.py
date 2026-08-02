@@ -3,6 +3,9 @@ import subprocess
 from brain.chat import chat
 from brain.commands import check_command
 from memory.memory import Memory
+from voice.listen import listen
+from voice.recorder import record_audio
+from voice.recognition import is_same_person
 
 memory = Memory()
 
@@ -11,7 +14,28 @@ print("Type 'exit' to quit.\n")
 
 while True:
 
-    user = input("Harshit: ").strip()
+    # Record fresh audio
+    audio_path = record_audio()
+
+    print("🔒 Verifying voice...")
+
+    same, score = is_same_person(
+        "voices/harshit/harshit.wav",
+        audio_path
+    )
+
+    print(f"Score: {score:.3f}")
+
+    if not same:
+        print("\n🌸 Ananya: Sorry, voice not recognized.\n")
+        continue
+
+    print("✅ Voice Verified\n")
+
+    user = listen().strip()
+
+    if not user:
+        continue
 
     if user.lower() == "exit":
         print("\n🌸 Ananya: Bye Harshit ❤️")
@@ -22,6 +46,7 @@ while True:
     if handled:
         print("\n" + reply + "\n")
         continue
+
     answer = chat(user)
 
     print("\n🌸 Ananya:")
@@ -245,13 +270,3 @@ while True:
             print("\n🌸 Ananya: Mujhe tumhari favourite movie nahi pata.\n")
 
         continue
-
-
-# ==========================
-# AI Chat
-# ==========================
-
-answer = chat(user)
-
-print("\n🌸 Ananya:")
-print(answer)
